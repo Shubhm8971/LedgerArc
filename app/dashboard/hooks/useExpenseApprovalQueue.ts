@@ -78,7 +78,7 @@ export default function ExpenseApprovalQueue({
     return null;
   }
 
-  return (
+  const content = (
     <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6 flex flex-col gap-4">
       <div>
         <h3 className="m-0 flex flex-wrap items-center gap-2 text-sm font-bold text-slate-100">
@@ -182,4 +182,6 @@ export default function ExpenseApprovalQueue({
       </div>
     </div>
   );
+
+  return content;
 }
