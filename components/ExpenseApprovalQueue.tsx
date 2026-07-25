@@ -1,10 +1,15 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { ExpenseLog } from '@/app/dashboard/hooks/useDashboardLedger';
+import { ExpenseLog as BaseExpenseLog } from '@/app/dashboard/hooks/useDashboardLedger';
 import { getSupabaseBrowserClient } from '@/utils/supabase-client';
 import { toast } from 'sonner';
-import AuditToggle from './AuditToggle';
+import AuditToggle from '@/components/AuditToggle';
+
+export interface ExpenseLog extends BaseExpenseLog {
+  exceeds_ceiling?: boolean;
+  is_weekend_violation?: boolean;
+}
 
 interface ExpenseApprovalQueueProps {
   expenses: ExpenseLog[];
@@ -111,7 +116,7 @@ export default function ExpenseApprovalQueue({
                 </div>
 
                 <div className="text-right text-sm font-bold font-mono text-slate-100 shrink-0">
-                  ₹{item.amount.toLocaleString('en-IN')}
+                  ₹{item.amount?.toLocaleString('en-IN') ?? 0}
                 </div>
               </div>
 
