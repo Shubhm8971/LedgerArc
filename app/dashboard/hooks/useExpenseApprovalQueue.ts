@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { ExpenseLog } from '@/app/dashboard/hooks/useDashboardLedger';
 import { getSupabaseBrowserClient } from '@/utils/supabase-client';
 import { toast } from 'sonner';
-import AuditToggle from './AuditToggle';
+import AuditToggle from '@/components/AuditToggle'; // or adjust relative path like ../components/AuditToggle
 
 interface ExpenseApprovalQueueProps {
   expenses: ExpenseLog[];
