@@ -1,10 +1,16 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { ExpenseLog } from '@/app/dashboard/hooks/useDashboardLedger';
+import { ExpenseLog as BaseExpenseLog } from '@/app/dashboard/hooks/useDashboardLedger';
 import { getSupabaseBrowserClient } from '@/utils/supabase-client';
 import { toast } from 'sonner';
-import AuditToggle from '@/components/AuditToggle'; // or adjust relative path like ../components/AuditToggle
+import AuditToggle from '@/components/AuditToggle';
+
+// Extended interface to prevent TypeScript property build errors
+export interface ExpenseLog extends BaseExpenseLog {
+  exceeds_ceiling?: boolean;
+  is_weekend_violation?: boolean;
+}
 
 interface ExpenseApprovalQueueProps {
   expenses: ExpenseLog[];
