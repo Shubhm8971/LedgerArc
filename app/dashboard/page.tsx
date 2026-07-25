@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { getSupabaseBrowserClient } from '@/utils/supabase-client';
 import { toast } from 'sonner';
 import { hasPermission, WorkspaceRole } from '@/utils/rbac';
@@ -15,6 +16,7 @@ import { useLedgerRealtime } from './hooks/useDashboardLedger';
 import { useDashboardActions } from './hooks/useDashboardActions';
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [expenses, setExpenses] = useState<ExpenseLog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -87,8 +89,12 @@ export default function DashboardPage() {
 
       try {
         const { data: { session } } = await supabase.auth.getSession();
+        
+        // Immediate redirect to login if not authenticated
         if (!session?.user?.id) {
-          if (!cancelled) setLoading(false);
+          if (!cancelled) {
+            router.replace('/login');
+          }
           return;
         }
 
@@ -125,7 +131,7 @@ export default function DashboardPage() {
 
     initializeDashboard();
     return () => { cancelled = true; };
-  }, [supabase, fetchLedgerData]);
+  }, [supabase, fetchLedgerData, router]);
 
   const refreshLedger = useCallback(() => {
     if (currentUserId && currentOrgId) {
@@ -156,7 +162,7 @@ export default function DashboardPage() {
   };
 
   if (loading) {
-    return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-500 font-mono">Synchronizing Workspace...</div>;
+    return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-500 font-mono">Authenticating Workspace Session...</div>;
   }
 
   if (profileError) {
@@ -283,7 +289,6 @@ export default function DashboardPage() {
           onClose={() => setAuditModalOpen(false)}
           onConfirm={async (justification: string) => {
             if (!activeAuditTarget || !justification.trim()) {
-              // Correct
               toast.error('Justification is required.');
               return;
             }
