@@ -283,7 +283,9 @@ export default function DashboardPage() {
           onClose={() => setAuditModalOpen(false)}
           onConfirm={async (justification: string) => {
             if (!activeAuditTarget || !justification.trim()) {
-              return toast.error('Justification is required.');
+              // Correct
+              toast.error('Justification is required.');
+              return;
             }
 
             try {
