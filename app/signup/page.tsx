@@ -24,7 +24,22 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      // 1. Sign up the user with Supabase Auth
+      const orgSlug = orgName.toLowerCase().trim().replace(/\s+/g, '-');
+
+      // 1. Check if workspace/org ID already exists
+      const { data: existingOrg, error: checkError } = await supabase
+        .from('user_profiles')
+        .select('org_id')
+        .eq('org_id', orgSlug)
+        .maybeSingle();
+
+      if (existingOrg) {
+        toast.error('Workspace name already taken. Please choose another one.');
+        setLoading(false);
+        return;
+      }
+
+      // 2. Sign up the user with Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
@@ -37,20 +52,16 @@ export default function SignupPage() {
         throw new Error('User creation failed.');
       }
 
-      // 2. Create the organization profile and assign admin role to the first user
-      // Note: Make sure your Supabase DB allows inserting into user_profiles upon signup, 
-      // or handle this via a database trigger function.
+      // 3. Create the organization profile for the new admin user
       const { error: profileError } = await supabase.from('user_profiles').insert({
         id: userId,
         role: 'admin',
-        org_id: orgName.toLowerCase().replace(/\s+/g, '-'), // Generates a clean organization ID slug
+        org_id: orgSlug,
       });
 
-      if (profileError) {
-        console.error('Profile insertion warning:', profileError.message);
-      }
+      if (profileError) throw profileError;
 
-      toast.success('Account created successfully! Redirecting to dashboard...');
+      toast.success('Workspace created successfully! Redirecting...');
       router.replace('/dashboard');
     } catch (err: any) {
       toast.error('Signup failed', { description: err.message });
@@ -64,12 +75,12 @@ export default function SignupPage() {
       <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-xl flex flex-col gap-6">
         <div>
           <h1 className="text-2xl font-black text-indigo-300">Create LedgerArc Account</h1>
-          <p className="text-sm text-slate-400 mt-1">Set up your workspace and start managing compliance.</p>
+          <p className="text-sm text-slate-400 mt-1">Set up your unique workspace.</p>
         </div>
 
         <form onSubmit={handleSignup} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-mono uppercase text-slate-400">Organization / Workspace Name</label>
+            <label className="text-xs font-mono uppercase text-slate-400">Workspace Name</label>
             <input
               type="text"
               value={orgName}
@@ -109,7 +120,7 @@ export default function SignupPage() {
             disabled={loading}
             className="mt-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-indigo-500 disabled:opacity-50"
           >
-            {loading ? 'Creating Workspace...' : 'Sign Up'}
+            {loading ? 'Validating Workspace...' : 'Sign Up'}
           </button>
         </form>
 
