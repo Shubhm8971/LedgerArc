@@ -34,7 +34,7 @@ export default function SignupPage() {
         .maybeSingle();
 
       if (existingOrg) {
-        toast.error('Workspace name already taken. Please choose another one.');
+        toast.error('This organization or workspace name is already taken. Please pick a different name.');
         setLoading(false);
         return;
       }
