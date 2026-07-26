@@ -19,8 +19,8 @@ export default function SignupPage() {
     try {
       const result = await signupAction(formData);
 
-      if (!result.success) {
-        toast.error(result.error || 'Signup failed.');
+      if (!result || !result.success) {
+        toast.error(result?.error || 'Signup failed with an unknown issue.');
         setLoading(false);
         return;
       }
@@ -29,7 +29,7 @@ export default function SignupPage() {
       router.replace('/dashboard');
       router.refresh();
     } catch (err: any) {
-      toast.error('Signup failed', { description: err.message || 'Network request failed.' });
+      toast.error('Signup failed', { description: err?.message || 'A network exception occurred.' });
       setLoading(false);
     }
   };
