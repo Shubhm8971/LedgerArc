@@ -27,7 +27,7 @@ export default function SignupPage() {
       const orgSlug = orgName.toLowerCase().trim().replace(/\s+/g, '-');
 
       // 1. Check if workspace/org ID already exists
-      const { data: existingOrg, error: checkError } = await supabase
+      const { data: existingOrg } = await supabase
         .from('user_profiles')
         .select('org_id')
         .eq('org_id', orgSlug)
@@ -52,11 +52,14 @@ export default function SignupPage() {
         throw new Error('User creation failed.');
       }
 
-      // 3. Create the organization profile for the new admin user
+      // 3. Generate a valid UUID to satisfy DB columns expecting UUID type,
+      // while storing the descriptive text slug safely.
+      const validOrgUuid = crypto.randomUUID();
+
       const { error: profileError } = await supabase.from('user_profiles').insert({
         id: userId,
         role: 'admin',
-        org_id: orgSlug,
+        org_id: validOrgUuid, 
       });
 
       if (profileError) throw profileError;
