@@ -1,15 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { ExpenseLog as BaseExpenseLog } from '@/app/dashboard/hooks/useDashboardLedger';
+import { ExpenseLog } from '@/types/ledger';
 import { getSupabaseBrowserClient } from '@/utils/supabase-client';
 import { toast } from 'sonner';
 import AuditToggle from '@/components/AuditToggle';
-
-export interface ExpenseLog extends BaseExpenseLog {
-  exceeds_ceiling?: boolean;
-  is_weekend_violation?: boolean;
-}
 
 interface ExpenseApprovalQueueProps {
   expenses: ExpenseLog[];

@@ -1,12 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ExpenseLog as BaseExpenseLog } from '@/app/dashboard/hooks/useDashboardLedger';
-
-export interface ExpenseLog extends BaseExpenseLog {
-  exceeds_ceiling?: boolean;
-  is_weekend_violation?: boolean;
-}
+import { ExpenseLog } from '@/types/ledger';
 
 interface DashboardAnalyticsProps {
   data: ExpenseLog[];
