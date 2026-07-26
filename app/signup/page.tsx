@@ -24,21 +24,62 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      const orgSlug = orgName.toLowerCase().trim().replace(/\s+/g, '-');
+      // 1. Normalize the workspace name into a consistent unique slug
+      const orgSlug = orgName.toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
 
-      // 1. Sign up the user and attach organization details securely to user metadata
+      if (!orgSlug) {
+        toast.error('Please enter a valid alphanumeric workspace name.');
+        setLoading(false);
+        return;
+      }
+
+      // 2. Globally check if this workspace name already exists in the database
+      const { data: existingOrg, error: checkError } = await supabase
+        .from('user_profiles')
+        .select('org_id')
+        .eq('org_id', orgSlug)
+        .maybeSingle();
+
+      if (checkError) {
+        console.error('Workspace check error:', checkError);
+      }
+
+      if (existingOrg) {
+        toast.error('This workspace name is already in use. Please choose a different name.');
+        setLoading(false);
+        return;
+      }
+
+      // 3. Sign up the user with Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
-        options: {
-          data: {
-            org_id: orgSlug,
-            role: 'admin',
-          },
-        },
       });
 
       if (authError) throw authError;
+      const userId = authData.user?.id;
+
+      if (!userId) {
+        throw new Error('User creation failed.');
+      }
+
+      // 4. Create the organization profile for the new admin user
+      const { error: profileError } = await supabase.from('user_profiles').insert({
+        id: userId,
+        role: 'admin',
+        org_id: orgSlug,
+      });
+
+      if (profileError) {
+        // If the database unique constraint catches a race condition duplicate
+        if (profileError.code === '23505') {
+          toast.error('This workspace name is already in use. Please choose a different name.');
+        } else {
+          throw profileError;
+        }
+        setLoading(false);
+        return;
+      }
 
       toast.success('Workspace created successfully! Redirecting...');
       router.replace('/dashboard');
@@ -64,7 +105,7 @@ export default function SignupPage() {
               type="text"
               value={orgName}
               onChange={(e) => setOrgName(e.target.value)}
-              placeholder="e.g. Acme Corp"
+              placeholder="e.g. LedgerArc"
               required
               className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 focus:border-indigo-500 focus:outline-none"
             />
@@ -99,7 +140,7 @@ export default function SignupPage() {
             disabled={loading}
             className="mt-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-indigo-500 disabled:opacity-50"
           >
-            {loading ? 'Creating Workspace...' : 'Sign Up'}
+            {loading ? 'Checking Availability...' : 'Sign Up'}
           </button>
         </form>
 
