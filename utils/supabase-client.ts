@@ -1,18 +1,21 @@
 import { createBrowserClient } from '@supabase/ssr';
 
-let supabaseClient: ReturnType<typeof createBrowserClient> | null = null;
+let client: ReturnType<typeof createBrowserClient> | undefined;
 
-export const getSupabaseBrowserClient = () => {
+export function getSupabaseBrowserClient() {
+  if (client) return client;
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error('Missing Supabase environment variables. Check NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.');
+    console.error('Missing Supabase environment variables!');
   }
 
-  if (!supabaseClient) {
-    supabaseClient = createBrowserClient(supabaseUrl, supabaseAnonKey);
-  }
+  client = createBrowserClient(
+    supabaseUrl || '',
+    supabaseAnonKey || ''
+  );
 
-  return supabaseClient;
-};
+  return client;
+}
