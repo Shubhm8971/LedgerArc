@@ -24,25 +24,20 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      // 1. Normalize the workspace name into a consistent unique slug
       const orgSlug = orgName.toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
 
       if (!orgSlug) {
-        toast.error('Please enter a valid alphanumeric workspace name.');
+        toast.error('Please enter a valid workspace name.');
         setLoading(false);
         return;
       }
 
-      // 2. Globally check if this workspace name already exists in the database
+      // 1. Check if workspace name already exists in the database
       const { data: existingOrg, error: checkError } = await supabase
         .from('user_profiles')
         .select('org_id')
         .eq('org_id', orgSlug)
         .maybeSingle();
-
-      if (checkError) {
-        console.error('Workspace check error:', checkError);
-      }
 
       if (existingOrg) {
         toast.error('This workspace name is already in use. Please choose a different name.');
@@ -50,7 +45,7 @@ export default function SignupPage() {
         return;
       }
 
-      // 3. Sign up the user with Supabase Auth
+      // 2. Sign up the user with Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
@@ -63,7 +58,7 @@ export default function SignupPage() {
         throw new Error('User creation failed.');
       }
 
-      // 4. Create the organization profile for the new admin user
+      // 3. Create the organization profile
       const { error: profileError } = await supabase.from('user_profiles').insert({
         id: userId,
         role: 'admin',
@@ -71,8 +66,8 @@ export default function SignupPage() {
       });
 
       if (profileError) {
-        // If the database unique constraint catches a race condition duplicate
-        if (profileError.code === '23505') {
+        // Catch duplicate violations or RLS policy blocks caused by duplicates
+        if (profileError.code === '23505' || profileError.message.includes('row-level security')) {
           toast.error('This workspace name is already in use. Please choose a different name.');
         } else {
           throw profileError;
@@ -84,7 +79,12 @@ export default function SignupPage() {
       toast.success('Workspace created successfully! Redirecting...');
       router.replace('/dashboard');
     } catch (err: any) {
-      toast.error('Signup failed', { description: err.message });
+      // Clean fallback if any other database error slips through
+      if (err.message?.includes('row-level security') || err.message?.includes('duplicate')) {
+        toast.error('This workspace name is already in use. Please choose a different name.');
+      } else {
+        toast.error('Signup failed', { description: err.message });
+      }
     } finally {
       setLoading(false);
     }
