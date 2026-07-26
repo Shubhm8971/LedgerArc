@@ -2,94 +2,34 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getSupabaseBrowserClient } from '@/utils/supabase-client';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { signupAction } from './actions';
 
 export default function SignupPage() {
   const router = useRouter();
-  const supabase = getSupabaseBrowserClient();
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [orgName, setOrgName] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email || !password || !orgName) {
-      toast.error('Please fill in all fields.');
-      return;
-    }
-
     setLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+
     try {
-      const orgSlug = orgName.toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+      const result = await signupAction(formData);
 
-      if (!orgSlug) {
-        toast.error('Please enter a valid workspace name.');
-        setLoading(false);
-        return;
-      }
-
-      // 1. Check if workspace slug already exists
-      const { data: existingOrg, error: checkError } = await supabase
-        .from('user_profiles')
-        .select('org_id')
-        .eq('org_id', orgSlug)
-        .maybeSingle();
-
-      if (checkError) {
-        console.warn('Check warning:', checkError);
-      }
-
-      if (existingOrg) {
-        toast.error('This workspace name is already in use. Please choose a different name.');
-        setLoading(false);
-        return;
-      }
-
-      // 2. Sign up the user with Supabase Auth
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-
-      if (authError) {
-        throw new Error(authError.message || JSON.stringify(authError));
-      }
-
-      const userId = authData.user?.id;
-      if (!userId) {
-        throw new Error('User creation failed to return an ID.');
-      }
-
-      // 3. Create the organization profile
-      const { error: profileError } = await supabase.from('user_profiles').insert({
-        id: userId,
-        role: 'admin',
-        org_id: orgSlug,
-      });
-
-      if (profileError) {
-        if (profileError.code === '23505' || profileError.message?.includes('unique')) {
-          toast.error('This workspace name is already in use. Please choose a different name.');
-        } else {
-          throw new Error(profileError.message || JSON.stringify(profileError));
-        }
+      if (!result.success) {
+        toast.error(result.error || 'Signup failed.');
         setLoading(false);
         return;
       }
 
       toast.success('Workspace created successfully! Redirecting...');
       router.replace('/dashboard');
+      router.refresh();
     } catch (err: any) {
-      console.error('[Signup Error Catch]:', err);
-      const errorMessage = err?.message && err.message !== '{}' 
-        ? err.message 
-        : 'An unexpected network or configuration error occurred. Check console logs.';
-      toast.error('Signup failed', { description: errorMessage });
-    } finally {
+      toast.error('Signup failed', { description: err.message || 'Network request failed.' });
       setLoading(false);
     }
   };
@@ -102,13 +42,12 @@ export default function SignupPage() {
           <p className="text-sm text-slate-400 mt-1">Set up your unique workspace.</p>
         </div>
 
-        <form onSubmit={handleSignup} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-mono uppercase text-slate-400">Workspace Name</label>
             <input
               type="text"
-              value={orgName}
-              onChange={(e) => setOrgName(e.target.value)}
+              name="orgName"
               placeholder="e.g. My-Unique-Company"
               required
               className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 focus:border-indigo-500 focus:outline-none"
@@ -119,8 +58,7 @@ export default function SignupPage() {
             <label className="text-xs font-mono uppercase text-slate-400">Email Address</label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              name="email"
               placeholder="you@company.com"
               required
               className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 focus:border-indigo-500 focus:outline-none"
@@ -131,8 +69,7 @@ export default function SignupPage() {
             <label className="text-xs font-mono uppercase text-slate-400">Password</label>
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
               placeholder="••••••••"
               required
               className="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 focus:border-indigo-500 focus:outline-none"
