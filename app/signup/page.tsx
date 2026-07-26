@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import Link from 'next/link';
-import { signupAction } from './actions';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -15,12 +14,21 @@ export default function SignupPage() {
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
+    const orgName = formData.get('orgName');
+    const email = formData.get('email');
+    const password = formData.get('password');
 
     try {
-      const result = await signupAction(formData);
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orgName, email, password }),
+      });
 
-      if (!result || !result.success) {
-        toast.error(result?.error || 'Signup failed with an unknown issue.');
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        toast.error(result.error || 'Signup failed.');
         setLoading(false);
         return;
       }
@@ -29,7 +37,7 @@ export default function SignupPage() {
       router.replace('/dashboard');
       router.refresh();
     } catch (err: any) {
-      toast.error('Signup failed', { description: err?.message || 'A network exception occurred.' });
+      toast.error('Signup failed', { description: err?.message || 'Network request failed.' });
       setLoading(false);
     }
   };
