@@ -24,7 +24,6 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      // 1. Generate a safe unique slug from the workspace name
       const orgSlug = orgName.toLowerCase().trim().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
 
       if (!orgSlug) {
@@ -33,7 +32,7 @@ export default function SignupPage() {
         return;
       }
 
-      // 2. Check if this exact workspace slug already exists
+      // 1. Check if workspace slug already exists
       const { data: existingOrg, error: checkError } = await supabase
         .from('user_profiles')
         .select('org_id')
@@ -41,7 +40,7 @@ export default function SignupPage() {
         .maybeSingle();
 
       if (checkError) {
-        console.warn('Check warning:', checkError.message);
+        console.warn('Check warning:', checkError);
       }
 
       if (existingOrg) {
@@ -50,20 +49,22 @@ export default function SignupPage() {
         return;
       }
 
-      // 3. Sign up the user with Supabase Auth
+      // 2. Sign up the user with Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
       });
 
-      if (authError) throw authError;
-      const userId = authData.user?.id;
-
-      if (!userId) {
-        throw new Error('User creation failed.');
+      if (authError) {
+        throw new Error(authError.message || JSON.stringify(authError));
       }
 
-      // 4. Create the organization profile
+      const userId = authData.user?.id;
+      if (!userId) {
+        throw new Error('User creation failed to return an ID.');
+      }
+
+      // 3. Create the organization profile
       const { error: profileError } = await supabase.from('user_profiles').insert({
         id: userId,
         role: 'admin',
@@ -71,10 +72,10 @@ export default function SignupPage() {
       });
 
       if (profileError) {
-        if (profileError.code === '23505' || profileError.message.includes('unique')) {
+        if (profileError.code === '23505' || profileError.message?.includes('unique')) {
           toast.error('This workspace name is already in use. Please choose a different name.');
         } else {
-          throw profileError;
+          throw new Error(profileError.message || JSON.stringify(profileError));
         }
         setLoading(false);
         return;
@@ -83,7 +84,11 @@ export default function SignupPage() {
       toast.success('Workspace created successfully! Redirecting...');
       router.replace('/dashboard');
     } catch (err: any) {
-      toast.error('Signup failed', { description: err.message });
+      console.error('[Signup Error Catch]:', err);
+      const errorMessage = err?.message && err.message !== '{}' 
+        ? err.message 
+        : 'An unexpected network or configuration error occurred. Check console logs.';
+      toast.error('Signup failed', { description: errorMessage });
     } finally {
       setLoading(false);
     }
