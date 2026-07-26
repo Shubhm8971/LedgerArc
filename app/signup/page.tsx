@@ -26,43 +26,19 @@ export default function SignupPage() {
     try {
       const orgSlug = orgName.toLowerCase().trim().replace(/\s+/g, '-');
 
-      // 1. Check if workspace/org ID already exists
-      const { data: existingOrg } = await supabase
-        .from('user_profiles')
-        .select('org_id')
-        .eq('org_id', orgSlug)
-        .maybeSingle();
-
-      if (existingOrg) {
-        toast.error('This organization or workspace name is already taken. Please pick a different name.');
-        setLoading(false);
-        return;
-      }
-
-      // 2. Sign up the user with Supabase Auth
+      // 1. Sign up the user and attach organization details securely to user metadata
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: {
+            org_id: orgSlug,
+            role: 'admin',
+          },
+        },
       });
 
       if (authError) throw authError;
-      const userId = authData.user?.id;
-
-      if (!userId) {
-        throw new Error('User creation failed.');
-      }
-
-      // 3. Generate a valid UUID to satisfy DB columns expecting UUID type,
-      // while storing the descriptive text slug safely.
-      const validOrgUuid = crypto.randomUUID();
-
-      const { error: profileError } = await supabase.from('user_profiles').insert({
-        id: userId,
-        role: 'admin',
-        org_id: validOrgUuid, 
-      });
-
-      if (profileError) throw profileError;
 
       toast.success('Workspace created successfully! Redirecting...');
       router.replace('/dashboard');
@@ -123,7 +99,7 @@ export default function SignupPage() {
             disabled={loading}
             className="mt-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-indigo-500 disabled:opacity-50"
           >
-            {loading ? 'Validating Workspace...' : 'Sign Up'}
+            {loading ? 'Creating Workspace...' : 'Sign Up'}
           </button>
         </form>
 
