@@ -219,7 +219,12 @@ export default function DashboardPage() {
               sessionStorage.clear();
               window.location.href = '/login';
             }}
-            onPdfUpload={handlePdfUpload}
+            onPdfUpload={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                handlePdfUpload(file);
+              }
+            }}
           />
         </header>
 
