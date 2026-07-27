@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { WorkspaceRole } from '@/utils/rbac';
+import { FileSpreadsheet, FileText, UploadCloud, ShieldAlert, Sparkles, Filter } from 'lucide-react';
 
 interface DashboardActionBarProps {
   userRole: WorkspaceRole;
@@ -10,7 +11,7 @@ interface DashboardActionBarProps {
   onGSTR1Export: () => void;
   onExportCSV: () => void;
   onSignOut: () => void;
-  onPdfUpload: (file: File) => void;
+  onPdfUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function DashboardActionBar({
@@ -18,68 +19,67 @@ export default function DashboardActionBar({
   setMatrixMode,
   onGSTR1Export,
   onExportCSV,
-  onSignOut,
   onPdfUpload,
 }: DashboardActionBarProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={(e) => {
-          if (e.target.files?.[0]) {
-            onPdfUpload(e.target.files[0]);
-          }
-        }}
-        accept="application/pdf"
-        className="hidden"
-      />
+    <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 rounded-3xl border border-slate-800/80 bg-slate-900/80 p-5 backdrop-blur-xl shadow-xl">
+      
+      {/* Matrix Mode Switcher */}
+      <div className="flex items-center gap-2 bg-slate-950/80 p-1.5 rounded-2xl border border-slate-800/80">
+        <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 px-3 flex items-center gap-1">
+          <Filter className="w-3 h-3 text-indigo-400" /> Filter:
+        </span>
+        <button
+          onClick={() => setMatrixMode('inclusive')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition cursor-pointer ${
+            matrixMode === 'inclusive'
+              ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          Inclusive
+        </button>
+        <button
+          onClick={() => setMatrixMode('strict')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition cursor-pointer ${
+            matrixMode === 'strict'
+              ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          Strict Compliance
+        </button>
+      </div>
 
-      <button
-        type="button"
-        onClick={() => fileInputRef.current?.click()}
-        className="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition"
-      >
-        📄 Upload PDF Bill
-      </button>
+      {/* Action Buttons */}
+      <div className="flex flex-wrap items-center gap-2.5">
+        
+        {/* PDF Upload Trigger */}
+        <label className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-700/80 bg-slate-800/60 hover:bg-slate-700/80 text-xs font-mono font-bold text-slate-200 transition cursor-pointer shadow-sm">
+          <UploadCloud className="w-4 h-4 text-indigo-400" />
+          <span>Upload Receipt</span>
+          <input type="file" accept="application/pdf" onChange={onPdfUpload} className="hidden" />
+        </label>
 
-      <button
-        type="button"
-        onClick={onExportCSV}
-        className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold transition border border-slate-700"
-      >
-        📊 Export CSV
-      </button>
+        {/* GSTR-1 Compile */}
+        <button
+          onClick={onGSTR1Export}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-indigo-500/30 bg-indigo-500/10 hover:bg-indigo-500/20 text-xs font-mono font-bold text-indigo-300 transition cursor-pointer shadow-sm"
+        >
+          <Sparkles className="w-4 h-4 text-indigo-400" />
+          <span>Compile GSTR-1</span>
+        </button>
 
-      <button
-        type="button"
-        onClick={onGSTR1Export}
-        className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold transition border border-slate-700"
-      >
-        📑 GSTR-1 JSON
-      </button>
+        {/* Export CSV */}
+        <button
+          onClick={onExportCSV}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-700/80 bg-slate-800/60 hover:bg-slate-700/80 text-xs font-mono font-bold text-slate-200 transition cursor-pointer shadow-sm"
+        >
+          <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+          <span>Export CSV</span>
+        </button>
 
-      <button
-        type="button"
-        onClick={() => setMatrixMode(matrixMode === 'inclusive' ? 'strict' : 'inclusive')}
-        className={`px-3 py-2 rounded-lg text-xs font-mono font-bold border transition ${
-          matrixMode === 'strict'
-            ? 'bg-rose-500/20 border-rose-500 text-rose-300'
-            : 'bg-slate-800 border-slate-700 text-slate-400'
-        }`}
-      >
-        Matrix: {matrixMode.toUpperCase()}
-      </button>
-
-      <button
-        type="button"
-        onClick={onSignOut}
-        className="px-3 py-2 bg-rose-950/40 hover:bg-rose-900/50 text-rose-400 rounded-lg text-xs font-bold transition border border-rose-900/50"
-      >
-        Sign Out
-      </button>
+      </div>
     </div>
   );
 }

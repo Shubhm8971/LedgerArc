@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { getSupabaseBrowserClient } from '@/utils/supabase-client';
 import { toast } from 'sonner';
+import { CheckCircle2, Circle, Loader2 } from 'lucide-react';
 
 interface AuditToggleProps {
   expenseId: string;
@@ -21,7 +22,10 @@ export default function AuditToggle({ expenseId, isAudited, onToggle }: AuditTog
     try {
       const { error } = await supabase
         .from('expense_logs')
-        .update({ is_audited: nextStatus, audited_at: nextStatus ? new Date().toISOString() : null })
+        .update({ 
+          is_audited: nextStatus, 
+          audited_at: nextStatus ? new Date().toISOString() : null 
+        })
         .eq('id', expenseId);
 
       if (error) throw error;
@@ -40,13 +44,28 @@ export default function AuditToggle({ expenseId, isAudited, onToggle }: AuditTog
       type="button"
       disabled={loading}
       onClick={handleToggleClick}
-      className={`px-3 py-1 rounded-full text-xs font-mono font-bold transition-all border ${
+      className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all border shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
         isAudited
-          ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300'
-          : 'bg-slate-800 border-slate-700 text-slate-400 hover:bg-slate-700'
+          ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 shadow-emerald-500/5'
+          : 'bg-slate-800/80 border-slate-700 text-slate-300 hover:bg-slate-700'
       }`}
     >
-      {loading ? 'Updating...' : isAudited ? '✓ Audited' : '○ Unaudited'}
+      {loading ? (
+        <>
+          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+          <span>Updating...</span>
+        </>
+      ) : isAudited ? (
+        <>
+          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+          <span>Audited</span>
+        </>
+      ) : (
+        <>
+          <Circle className="w-3.5 h-3.5 text-slate-400" />
+          <span>Unaudited</span>
+        </>
+      )}
     </button>
   );
 }
