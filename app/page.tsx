@@ -2,98 +2,80 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Shield, ArrowRight, Building2, FileText, Sparkles, CheckCircle2 } from 'lucide-react';
 
 export default function LandingPage() {
   return (
-    <div className="relative min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between overflow-hidden px-4 py-8 md:px-12">
-      {/* Background ambient glow effects */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/10 blur-[160px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-[400px] h-[400px] bg-violet-600/10 blur-[130px] rounded-full pointer-events-none" />
-
+    <div style={{ minHeight: '100vh', backgroundColor: '#020617', color: '#f8fafc', fontFamily: 'system-ui, sans-serif', padding: '2rem 1rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
+      
       {/* Top Navigation */}
-      <nav className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between rounded-3xl border border-slate-800/80 bg-slate-900/80 px-6 py-4 backdrop-blur-xl shadow-xl">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-400">
-            <Shield className="w-5 h-5" />
+      <nav style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'between', background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(30, 41, 59, 0.8)', padding: '1rem 1.5rem', borderRadius: '1.5rem', backdropFilter: 'blur(16px)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(79, 70, 229, 0.2)', border: '1px solid rgba(99, 102, 241, 0.3)', borderRadius: '0.75rem', color: '#818cf8', fontWeight: 'bold' }}>
+            🛡️
           </div>
-          <span className="text-lg font-black tracking-tight text-white font-mono">LedgerArc</span>
+          <span style={{ fontSize: '1.125rem', fontWeight: 900, letterSpacing: '-0.025em', color: '#ffffff', fontFamily: 'monospace' }}>LedgerArc</span>
         </div>
 
-        <div className="flex items-center gap-4">
-          <Link
-            href="/login"
-            className="px-4 py-2 rounded-xl text-xs font-mono font-bold text-slate-300 hover:text-white transition"
-          >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <Link href="/login" style={{ padding: '0.5rem 1rem', fontSize: '0.75rem', fontFamily: 'monospace', fontWeight: 'bold', color: '#cbd5e1', textDecoration: 'none' }}>
             Log In
           </Link>
-          <Link
-            href="/signup"
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-mono font-bold text-white shadow-lg shadow-indigo-600/30 transition"
-          >
-            <span>Get Started</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+          <Link href="/signup" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem', background: '#4f46e5', borderRadius: '0.75rem', fontSize: '0.75rem', fontFamily: 'monospace', fontWeight: 'bold', color: '#ffffff', textDecoration: 'none', boxShadow: '0 10px 15px -3px rgba(79, 70, 229, 0.3)' }}>
+            Get Started →
           </Link>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <main className="relative z-10 max-w-5xl mx-auto w-full flex flex-col items-center text-center my-auto py-16 gap-8">
+      <main style={{ maxWidth: '900px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '4rem 0', gap: '2rem' }}>
         
-        <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-mono font-bold text-indigo-300 uppercase tracking-widest shadow-inner">
-          <Sparkles className="w-3.5 h-3.5 text-indigo-400" /> Secure Multi-Tenant Enterprise Ledger
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(79, 70, 229, 0.1)', border: '1px solid rgba(99, 102, 241, 0.3)', padding: '0.375rem 1rem', borderRadius: '9999px', fontSize: '0.75rem', fontFamily: 'monospace', fontWeight: 'bold', color: '#a5b4fc', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          ✨ Secure Multi-Tenant Enterprise Ledger
         </div>
 
-        <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white max-w-3xl leading-tight">
-          Automated Compliance & <span className="text-indigo-400">Intelligent Ledger</span> Auditing
+        <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 900, lineHeight: 1.1, color: '#ffffff', margin: 0 }}>
+          Automated Compliance & <span style={{ color: '#818cf8' }}>Intelligent Ledger</span> Auditing
         </h1>
 
-        <p className="text-base md:text-lg text-slate-400 max-w-2xl font-mono">
+        <p style={{ fontSize: '1rem', color: '#94a3b8', maxWidth: '600px', fontFamily: 'monospace', lineHeight: 1.6, margin: 0 }}>
           Isolate organization workspaces, enforce strict ceiling controls, compile GSTR-1 data effortlessly, and manage real-time expense approvals.
         </p>
 
         {/* Action CTAs */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center pt-4">
-          <Link
-            href="/signup"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-sm font-bold text-white shadow-xl shadow-indigo-600/40 transition active:scale-[0.99]"
-          >
-            <span>Initialize Organization Workspace</span>
-            <ArrowRight className="w-4 h-4" />
+        <div style={{ display: 'flex', gap: '1rem', width: '100%', justifyContent: 'center', flexWrap: 'wrap', marginTop: '1rem' }}>
+          <Link href="/signup" style={{ padding: '1rem 2rem', background: '#4f46e5', borderRadius: '1rem', fontSize: '0.875rem', fontWeight: 'bold', color: '#ffffff', textDecoration: 'none', boxShadow: '0 20px 25px -5px rgba(79, 70, 229, 0.4)' }}>
+            Initialize Organization Workspace →
           </Link>
-          <Link
-            href="/login"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 rounded-2xl border border-slate-700/80 bg-slate-900/80 hover:bg-slate-800 text-sm font-bold text-slate-200 transition"
-          >
-            <span>Access Portal Gateway</span>
+          <Link href="/login" style={{ padding: '1rem 2rem', background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(51, 65, 85, 0.8)', borderRadius: '1rem', fontSize: '0.875rem', fontWeight: 'bold', color: '#e2e8f0', textDecoration: 'none' }}>
+            Access Portal Gateway
           </Link>
         </div>
 
-        {/* Feature Grid Highlights */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full pt-12 text-left">
+        {/* Feature Grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem', width: '100%', marginTop: '3rem', textAlign: 'left' }}>
           
-          <div className="rounded-3xl border border-slate-800/80 bg-slate-900/60 p-6 backdrop-blur-xl flex flex-col gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400">
-              <Building2 className="w-5 h-5" />
+          <div style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(30, 41, 59, 0.8)', borderRadius: '1.5rem', padding: '1.5rem', backdropFilter: 'blur(16px)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <div style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(79, 70, 229, 0.1)', border: '1px solid rgba(99, 102, 241, 0.3)', borderRadius: '0.75rem', color: '#818cf8' }}>
+              🏢
             </div>
-            <h3 className="text-sm font-mono font-bold uppercase tracking-wider text-white">Isolated Workspaces</h3>
-            <p className="text-xs text-slate-400">Secure multi-tenant data partitioning ensuring strict corporate security boundaries.</p>
+            <h3 style={{ fontSize: '0.875rem', fontFamily: 'monospace', fontWeight: 'bold', textTransform: 'uppercase', color: '#ffffff', margin: 0 }}>Isolated Workspaces</h3>
+            <p style={{ fontSize: '0.75rem', color: '#94a3b8', margin: 0, lineHeight: 1.5 }}>Secure multi-tenant data partitioning ensuring strict corporate security boundaries.</p>
           </div>
 
-          <div className="rounded-3xl border border-slate-800/80 bg-slate-900/60 p-6 backdrop-blur-xl flex flex-col gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-              <CheckCircle2 className="w-5 h-5" />
+          <div style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(30, 41, 59, 0.8)', borderRadius: '1.5rem', padding: '1.5rem', backdropFilter: 'blur(16px)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <div style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '0.75rem', color: '#34d399' }}>
+              ✓
             </div>
-            <h3 className="text-sm font-mono font-bold uppercase tracking-wider text-white">Live Compliance Matrix</h3>
-            <p className="text-xs text-slate-400">Instant anomaly detection for temporal violations and ceiling breaches.</p>
+            <h3 style={{ fontSize: '0.875rem', fontFamily: 'monospace', fontWeight: 'bold', textTransform: 'uppercase', color: '#ffffff', margin: 0 }}>Live Compliance Matrix</h3>
+            <p style={{ fontSize: '0.75rem', color: '#94a3b8', margin: 0, lineHeight: 1.5 }}>Instant anomaly detection for temporal violations and ceiling breaches.</p>
           </div>
 
-          <div className="rounded-3xl border border-slate-800/80 bg-slate-900/60 p-6 backdrop-blur-xl flex flex-col gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-500/10 border border-violet-500/30 text-violet-400">
-              <FileText className="w-5 h-5" />
+          <div style={{ background: 'rgba(15, 23, 42, 0.6)', border: '1px solid rgba(30, 41, 59, 0.8)', borderRadius: '1.5rem', padding: '1.5rem', backdropFilter: 'blur(16px)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <div style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.3)', borderRadius: '0.75rem', color: '#a78bfa' }}>
+              📄
             </div>
-            <h3 className="text-sm font-mono font-bold uppercase tracking-wider text-white">GSTR-1 Compilation</h3>
-            <p className="text-xs text-slate-400">Seamless accountant-ready CSV exports and automated receipt parsing pipelines.</p>
+            <h3 style={{ fontSize: '0.875rem', fontFamily: 'monospace', fontWeight: 'bold', textTransform: 'uppercase', color: '#ffffff', margin: 0 }}>GSTR-1 Compilation</h3>
+            <p style={{ fontSize: '0.75rem', color: '#94a3b8', margin: 0, lineHeight: 1.5 }}>Seamless accountant-ready CSV exports and automated receipt parsing pipelines.</p>
           </div>
 
         </div>
@@ -101,7 +83,7 @@ export default function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 max-w-7xl mx-auto w-full text-center text-xs text-slate-500 font-mono pt-8 border-t border-slate-900">
+      <footer style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', textAlign: 'center', fontSize: '0.75rem', color: '#64748b', fontFamily: 'monospace', paddingTop: '2rem', borderTop: '1px solid rgba(15, 23, 42, 1)' }}>
         LedgerArc Enterprise Financial Protocol &copy; {new Date().getFullYear()} • Secure Gateway
       </footer>
 
