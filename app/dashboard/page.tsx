@@ -160,8 +160,8 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center gap-3 text-slate-400 font-mono text-xs">
-        <div className="w-6 h-6 border-2 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin" />
+      <div style={{ minHeight: '100vh', backgroundColor: '#020617', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', color: '#94a3b8', fontFamily: 'monospace', fontSize: '0.75rem' }}>
+        <div style={{ width: '1.5rem', height: '1.5rem', border: '2px solid rgba(99, 102, 241, 0.2)', borderTopColor: '#6366f1', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
         <span>Authenticating Workspace Session...</span>
       </div>
     );
@@ -169,38 +169,39 @@ export default function DashboardPage() {
 
   if (profileError) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center gap-3 text-rose-400 font-mono text-xs">
-        <AlertCircle className="w-8 h-8 text-rose-500" />
+      <div style={{ minHeight: '100vh', backgroundColor: '#020617', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', color: '#f43f5e', fontFamily: 'monospace', fontSize: '0.75rem' }}>
+        <AlertCircle style={{ width: '2rem', height: '2rem', color: '#f43f5e' }} />
         <span>{profileError}</span>
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen bg-slate-950 text-slate-100 px-4 py-8 md:px-8 overflow-hidden">
+    <div style={{ minHeight: '100vh', backgroundColor: '#020617', color: '#f8fafc', padding: '2rem 1rem', maxWidth: '1400px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2rem', boxSizing: 'border-box', position: 'relative', overflow: 'hidden' }}>
+      
       {/* Background ambient glow effects */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-600/5 blur-[150px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-[400px] h-[400px] bg-violet-600/5 blur-[130px] rounded-full pointer-events-none" />
+      <div style={{ position: 'absolute', top: 0, left: '25%', width: '500px', height: '500px', background: 'rgba(79, 70, 229, 0.05)', filter: 'blur(150px)', borderRadius: '50%', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: '2.5rem', right: '2.5rem', width: '400px', height: '400px', background: 'rgba(139, 92, 246, 0.05)', filter: 'blur(130px)', borderRadius: '50%', pointerEvents: 'none' }} />
 
-      <div className="max-w-7xl mx-auto flex flex-col gap-8 relative z-10">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', position: 'relative', zIndex: 10, width: '100%' }}>
         
         {/* Header Navigation */}
-        <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 rounded-3xl border border-slate-800/80 bg-slate-900/80 p-6 backdrop-blur-xl shadow-xl">
-          <div className="flex items-center gap-3.5">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-400 shadow-inner">
-              <Shield className="w-6 h-6" />
+        <header style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', borderRadius: '1.5rem', border: '1px solid rgba(30, 41, 59, 0.8)', background: 'rgba(15, 23, 42, 0.8)', padding: '1.5rem', backdropFilter: 'blur(16px)', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ display: 'flex', height: '3rem', width: '3rem', alignItems: 'center', justifyContent: 'center', borderRadius: '1rem', background: 'rgba(79, 70, 229, 0.2)', border: '1px solid rgba(99, 102, 241, 0.3)', color: '#818cf8', boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.6)' }}>
+              <Shield style={{ width: '1.5rem', height: '1.5rem' }} />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl font-black tracking-tight text-white">LedgerArc Command</h1>
-                <span className="rounded-full bg-indigo-500/10 border border-indigo-500/30 px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-300">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <h1 style={{ fontSize: '1.25rem', fontWeight: 900, letterSpacing: '-0.025em', color: '#ffffff', margin: 0 }}>LedgerArc Command</h1>
+                <span style={{ borderRadius: '9999px', background: 'rgba(79, 70, 229, 0.1)', border: '1px solid rgba(99, 102, 241, 0.3)', padding: '0.125rem 0.625rem', fontSize: '10px', fontFamily: 'monospace', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#a5b4fc' }}>
                   Secure Portal
                 </span>
               </div>
-              <div className="flex items-center gap-3 text-xs text-slate-400 mt-1 font-mono">
-                <span className="flex items-center gap-1.5"><Building2 className="w-3.5 h-3.5 text-indigo-400" /> Org: <span className="text-slate-200">{currentOrgId || 'Workspace'}</span></span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.75rem', color: '#94a3b8', marginTop: '0.25rem', fontFamily: 'monospace', flexWrap: 'wrap' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}><Building2 style={{ width: '14px', height: '14px', color: '#818cf8' }} /> Org: <span style={{ color: '#e2e8f0' }}>{currentOrgId || 'Workspace'}</span></span>
                 <span>•</span>
-                <span className="flex items-center gap-1.5 uppercase"><UserCheck className="w-3.5 h-3.5 text-emerald-400" /> Tier: <span className="text-slate-200">{userRole}</span></span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', textTransform: 'uppercase' }}><UserCheck style={{ width: '14px', height: '14px', color: '#34d399' }} /> Tier: <span style={{ color: '#e2e8f0' }}>{userRole}</span></span>
               </div>
             </div>
           </div>
@@ -232,37 +233,37 @@ export default function DashboardPage() {
         <DashboardAnalytics data={processedExpenses} />
 
         {/* Master Ledger Section */}
-        <section className="w-full rounded-3xl border border-slate-800/80 bg-slate-900/80 p-6 md:p-8 backdrop-blur-xl shadow-xl flex flex-col gap-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800/80 pb-4">
+        <section style={{ width: '100%', borderRadius: '1.5rem', border: '1px solid rgba(30, 41, 59, 0.8)', background: 'rgba(15, 23, 42, 0.8)', padding: '1.5rem', backdropFilter: 'blur(16px)', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)', display: 'flex', flexDirection: 'column', gap: '1.5rem', boxSizing: 'border-box' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem', borderBottom: '1px solid rgba(30, 41, 59, 0.8)', paddingBottom: '1rem' }}>
             <div>
-              <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-indigo-300 flex items-center gap-2">
+              <h2 style={{ fontSize: '0.875rem', fontFamily: 'monospace', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#a5b4fc', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 Master Ledger View
               </h2>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Showing {processedExpenses.length} records in <span className="font-semibold uppercase text-indigo-400">{matrixMode}</span> mode
+              <p style={{ fontSize: '0.75rem', color: '#94a3b8', margin: '0.25rem 0 0 0', fontFamily: 'monospace' }}>
+                Showing {processedExpenses.length} records in <span style={{ fontWeight: 'bold', textTransform: 'uppercase', color: '#818cf8' }}>{matrixMode}</span> mode
               </p>
             </div>
             
             <button 
               onClick={refreshLedger}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-700/80 bg-slate-800/60 text-xs font-mono font-bold text-slate-300 hover:bg-slate-700 transition cursor-pointer"
+              style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', padding: '0.5rem 0.875rem', borderRadius: '0.75rem', border: '1px solid rgba(51, 65, 85, 0.8)', background: 'rgba(30, 41, 59, 0.6)', fontSize: '0.75rem', fontFamily: 'monospace', fontWeight: 'bold', color: '#cbd5e1', cursor: 'pointer' }}
             >
-              <RefreshCw className="w-3.5 h-3.5" />
+              <RefreshCw style={{ width: '14px', height: '14px' }} />
               <span>Force Refresh</span>
             </button>
           </div>
 
           {processedExpenses.length === 0 ? (
-            <div className="py-12 text-center flex flex-col items-center justify-center gap-2">
-              <Shield className="w-8 h-8 text-slate-600" />
-              <p className="text-xs text-slate-400 font-mono">
+            <div style={{ padding: '3rem 0', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+              <Shield style={{ width: '2rem', height: '2rem', color: '#475569' }} />
+              <p style={{ fontSize: '0.75rem', color: '#94a3b8', fontFamily: 'monospace', margin: 0 }}>
                 {matrixMode === 'strict' 
                   ? 'No fully approved and audited transactions found in Strict mode.' 
                   : 'No transactions found in database for this organization.'}
               </p>
             </div>
           ) : (
-            <div className="flex flex-col gap-3">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {processedExpenses.map((item) => {
                 const isApproved = item.approval_status === 'approved';
                 const isRejected = item.approval_status === 'rejected';
@@ -270,32 +271,28 @@ export default function DashboardPage() {
                 return (
                   <div 
                     key={item.id} 
-                    className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 rounded-2xl border border-slate-800/80 bg-slate-950/60 hover:bg-slate-950/90 transition"
+                    style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', padding: '1rem 1.25rem', borderRadius: '1rem', border: '1px solid rgba(30, 41, 59, 0.8)', background: 'rgba(2, 6, 23, 0.6)', boxSizing: 'border-box' }}
                   >
-                    <div className="flex flex-col gap-1">
-                      <span className="text-sm font-semibold text-slate-100">{item.vendor || 'Unknown Vendor'}</span>
-                      <span className="text-xs text-slate-400 font-mono line-clamp-1">{item.raw_transcript || 'No transcript text available'}</span>
-                      <span className="text-[10px] font-mono text-slate-600">ID: {item.id}</span>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', maxWidth: '550px' }}>
+                      <span style={{ fontSize: '0.875rem', fontWeight: 600, color: '#f8fafc' }}>{item.vendor || 'Unknown Vendor'}</span>
+                      <span style={{ fontSize: '0.75rem', color: '#94a3b8', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.raw_transcript || 'No transcript text available'}</span>
+                      <span style={{ fontSize: '10px', fontFamily: 'monospace', color: '#475569' }}>ID: {item.id}</span>
                     </div>
 
-                    <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto">
-                      <div className="text-right flex flex-col items-end gap-1">
-                        <span className="text-base font-mono font-black text-indigo-400">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
+                      <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.25rem' }}>
+                        <span style={{ fontSize: '1rem', fontFamily: 'monospace', fontWeight: 900, color: '#818cf8' }}>
                           ₹{item.amount?.toLocaleString('en-IN') ?? 0}
                         </span>
-                        <span className={`inline-flex items-center gap-1 text-[10px] font-mono uppercase px-2.5 py-0.5 rounded-full border ${
-                          isApproved ? 'bg-emerald-950/60 text-emerald-400 border-emerald-800/80' :
-                          isRejected ? 'bg-rose-950/60 text-rose-400 border-rose-800/80' :
-                          'bg-amber-950/60 text-amber-400 border-amber-800/80'
-                        }`}>
-                          {isApproved && <CheckCircle2 className="w-3 h-3" />}
-                          {isRejected && <XCircle className="w-3 h-3" />}
-                          {!isApproved && !isRejected && <Clock className="w-3 h-3" />}
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', fontSize: '10px', fontFamily: 'monospace', textTransform: 'uppercase', padding: '0.125rem 0.625rem', borderRadius: '9999px', border: '1px solid', background: isApproved ? 'rgba(6, 78, 59, 0.6)' : isRejected ? 'rgba(136, 19, 55, 0.6)' : 'rgba(120, 53, 15, 0.6)', color: isApproved ? '#34d399' : isRejected ? '#fca5a5' : '#fbbf24', borderColor: isApproved ? 'rgba(16, 185, 129, 0.4)' : isRejected ? 'rgba(244, 63, 94, 0.4)' : 'rgba(245, 158, 11, 0.4)' }}>
+                          {isApproved && <CheckCircle2 style={{ width: '12px', height: '12px' }} />}
+                          {isRejected && <XCircle style={{ width: '12px', height: '12px' }} />}
+                          {!isApproved && !isRejected && <Clock style={{ width: '12px', height: '12px' }} />}
                           {item.approval_status || 'pending'}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2 border-l border-slate-800/80 pl-4">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderLeft: '1px solid rgba(30, 41, 59, 0.8)', paddingLeft: '1rem' }}>
                         <button
                           onClick={async () => {
                             const { error } = await supabase
@@ -309,7 +306,7 @@ export default function DashboardPage() {
                               refreshLedger();
                             }
                           }}
-                          className="px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold rounded-xl transition cursor-pointer"
+                          style={{ padding: '0.375rem 0.75rem', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#34d399', fontSize: '0.75rem', fontFamily: 'monospace', fontWeight: 'bold', borderRadius: '0.75rem', cursor: 'pointer' }}
                         >
                           Approve
                         </button>
@@ -327,7 +324,7 @@ export default function DashboardPage() {
                               refreshLedger();
                             }
                           }}
-                          className="px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold rounded-xl transition cursor-pointer"
+                          style={{ padding: '0.375rem 0.75rem', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', color: '#fbbf24', fontSize: '0.75rem', fontFamily: 'monospace', fontWeight: 'bold', borderRadius: '0.75rem', cursor: 'pointer' }}
                         >
                           Reset
                         </button>
