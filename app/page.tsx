@@ -20,7 +20,7 @@ export default function LandingPage() {
           <span className="text-lg font-black tracking-tight text-white font-mono">LedgerArc</span>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <Link
             href="/login"
             className="px-4 py-2 rounded-xl text-xs font-mono font-bold text-slate-300 hover:text-white transition"
@@ -70,7 +70,7 @@ export default function LandingPage() {
         </div>
 
         {/* Feature Grid Highlights */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full pt-12 text-left">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full pt-12 text-left">
           
           <div className="rounded-3xl border border-slate-800/80 bg-slate-900/60 p-6 backdrop-blur-xl flex flex-col gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400">
