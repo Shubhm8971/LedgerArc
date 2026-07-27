@@ -52,29 +52,29 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-slate-950 px-4 py-12 text-slate-100 overflow-hidden">
+    <div style={{ minHeight: '100vh', backgroundColor: '#020617', color: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem', position: 'relative', overflow: 'hidden', boxSizing: 'border-box' }}>
       {/* Background ambient glow effects */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-600/10 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-80 h-80 bg-violet-600/10 blur-[100px] rounded-full pointer-events-none" />
+      <div style={{ position: 'absolute', top: '25%', left: '50%', transform: 'translate(-50%, -50%)', width: '400px', height: '400px', background: 'rgba(79, 70, 229, 0.1)', filter: 'blur(120px)', borderRadius: '50%', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: '2.5rem', right: '2.5rem', width: '320px', height: '320px', background: 'rgba(139, 92, 246, 0.1)', filter: 'blur(100px)', borderRadius: '50%', pointerEvents: 'none' }} />
 
-      <div className="relative w-full max-w-md rounded-3xl border border-slate-800/80 bg-slate-900/90 p-8 shadow-2xl backdrop-blur-xl flex flex-col gap-6">
+      <div style={{ width: '100%', maxWidth: '440px', background: 'rgba(15, 23, 42, 0.9)', border: '1px solid rgba(30, 41, 59, 0.8)', borderRadius: '1.5rem', padding: '2rem', backdropFilter: 'blur(20px)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)', display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'relative', zIndex: 10, boxSizing: 'border-box' }}>
         
         {/* Header Branding */}
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2 text-indigo-400 font-mono text-xs uppercase tracking-widest font-semibold">
-            <ShieldCheck className="w-4 h-4 text-indigo-400" />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: '#818cf8', fontFamily: 'monospace', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>
+            <ShieldCheck style={{ width: '16px', height: '16px', color: '#818cf8' }} />
             Secure Enterprise Gateway
           </div>
-          <h1 className="text-3xl font-black tracking-tight text-white">Create LedgerArc</h1>
-          <p className="text-sm text-slate-400">Initialize your isolated organizational workspace.</p>
+          <h1 style={{ fontSize: '1.875rem', fontWeight: 900, letterSpacing: '-0.025em', color: '#ffffff', margin: 0 }}>Create LedgerArc</h1>
+          <p style={{ fontSize: '0.875rem', color: '#94a3b8', margin: 0 }}>Initialize your isolated organizational workspace.</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           
           {/* Workspace Name Input with Live Slug Preview */}
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-              <Building2 className="w-3.5 h-3.5 text-indigo-400" /> Workspace Name
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
+            <label style={{ fontSize: '0.75rem', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '0.375rem', fontWeight: 'bold' }}>
+              <Building2 style={{ width: '14px', height: '14px', color: '#818cf8' }} /> Workspace Name
             </label>
             <input
               type="text"
@@ -83,49 +83,49 @@ export default function SignupPage() {
               onChange={(e) => setOrgName(e.target.value)}
               placeholder="e.g. Acme Corp"
               required
-              className="rounded-xl border border-slate-700/80 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition"
+              style={{ width: '100%', borderRadius: '0.75rem', border: '1px solid rgba(51, 65, 85, 0.8)', background: 'rgba(2, 6, 23, 0.8)', padding: '0.75rem 1rem', fontSize: '0.875rem', color: '#f8fafc', outline: 'none', boxSizing: 'border-box' }}
             />
             {orgName.trim() && (
-              <span className="text-[11px] font-mono text-indigo-300/80 px-1 pt-0.5 truncate">
-                URL Slug: <span className="text-indigo-400 font-semibold">{orgSlug || '...'}</span>
+              <span style={{ fontSize: '11px', fontFamily: 'monospace', color: 'rgba(165, 180, 252, 0.8)', paddingLeft: '0.25rem', paddingTop: '0.125rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                URL Slug: <span style={{ color: '#818cf8', fontWeight: 600 }}>{orgSlug || '...'}</span>
               </span>
             )}
           </div>
 
           {/* Email Address Input */}
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-              <Mail className="w-3.5 h-3.5 text-indigo-400" /> Admin Email
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
+            <label style={{ fontSize: '0.75rem', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '0.375rem', fontWeight: 'bold' }}>
+              <Mail style={{ width: '14px', height: '14px', color: '#818cf8' }} /> Admin Email
             </label>
             <input
               type="email"
               name="email"
               placeholder="you@company.com"
               required
-              className="rounded-xl border border-slate-700/80 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition"
+              style={{ width: '100%', borderRadius: '0.75rem', border: '1px solid rgba(51, 65, 85, 0.8)', background: 'rgba(2, 6, 23, 0.8)', padding: '0.75rem 1rem', fontSize: '0.875rem', color: '#f8fafc', outline: 'none', boxSizing: 'border-box' }}
             />
           </div>
 
           {/* Password Input with Visibility Toggle */}
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-              <Lock className="w-3.5 h-3.5 text-indigo-400" /> Secure Password
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
+            <label style={{ fontSize: '0.75rem', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '0.375rem', fontWeight: 'bold' }}>
+              <Lock style={{ width: '14px', height: '14px', color: '#818cf8' }} /> Secure Password
             </label>
-            <div className="relative">
+            <div style={{ position: 'relative', width: '100%' }}>
               <input
                 type={showPassword ? 'text' : 'password'}
                 name="password"
                 placeholder="••••••••"
                 required
-                className="w-full rounded-xl border border-slate-700/80 bg-slate-950/80 px-4 py-3 pr-10 text-sm text-slate-100 placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition"
+                style={{ width: '100%', borderRadius: '0.75rem', border: '1px solid rgba(51, 65, 85, 0.8)', background: 'rgba(2, 6, 23, 0.8)', padding: '0.75rem 2.5rem 0.75rem 1rem', fontSize: '0.875rem', color: '#f8fafc', outline: 'none', boxSizing: 'border-box' }}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition"
+                style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
                 tabIndex={-1}
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? <EyeOff style={{ width: '16px', height: '16px' }} /> : <Eye style={{ width: '16px', height: '16px' }} />}
               </button>
             </div>
           </div>
@@ -134,26 +134,26 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-3 group relative flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-600/30 transition-all hover:bg-indigo-500 hover:shadow-indigo-500/50 active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            style={{ marginTop: '0.75rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', borderRadius: '0.75rem', background: '#4f46e5', padding: '0.75rem 1rem', fontSize: '0.875rem', fontWeight: 'bold', color: '#ffffff', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.5 : 1, boxShadow: '0 10px 15px -3px rgba(79, 70, 229, 0.3)', transition: 'background 0.2s' }}
           >
             {loading ? (
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div style={{ width: '1rem', height: '1rem', border: '2px solid rgba(255, 255, 255, 0.2)', borderTopColor: '#ffffff', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
                 <span>Initializing Workspace...</span>
               </div>
             ) : (
               <>
                 <span>Launch Workspace</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight style={{ width: '16px', height: '16px' }} />
               </>
             )}
           </button>
         </form>
 
         {/* Footer Login Link */}
-        <div className="text-center text-xs text-slate-400 pt-2 border-t border-slate-800/80">
+        <div style={{ textAlign: 'center', fontSize: '0.75rem', color: '#94a3b8', paddingTop: '0.5rem', borderTop: '1px solid rgba(30, 41, 59, 0.8)' }}>
           Already managing an organization?{' '}
-          <Link href="/login" className="text-indigo-400 hover:text-indigo-300 font-semibold transition hover:underline">
+          <Link href="/login" style={{ color: '#818cf8', fontWeight: 600, textDecoration: 'none' }}>
             Log in to portal
           </Link>
         </div>
