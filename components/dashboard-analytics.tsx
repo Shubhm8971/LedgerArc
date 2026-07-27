@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ExpenseLog } from '@/types/ledger';
-import { Wallet, CheckCircle, ShieldAlert, FileText, TrendingUp } from 'lucide-react';
+import { Wallet, CheckCircle, ShieldAlert } from 'lucide-react';
 
 interface DashboardAnalyticsProps {
   data: ExpenseLog[];
@@ -11,7 +11,11 @@ interface DashboardAnalyticsProps {
 export default function DashboardAnalytics({ data }: DashboardAnalyticsProps) {
   const totalSpent = data.reduce((acc, item) => acc + (item.amount || 0), 0);
   const approvedCount = data.filter((item) => item.approval_status === 'approved').length;
-  const anomaliesCount = data.filter((item) => item.is_anomaly || item.exceeds_ceiling || item.is_weekend_violation).length;
+  
+  // Safely check properties even if they aren't explicitly declared in the interface yet
+  const anomaliesCount = data.filter((item: any) => 
+    item?.is_anomaly || item?.exceeds_ceiling || item?.is_weekend_violation
+  ).length;
 
   const metrics = [
     {
