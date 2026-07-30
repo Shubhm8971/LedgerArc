@@ -39,21 +39,24 @@ export async function POST(request: Request) {
     const sgst = 4500.00;
     const rawTranscript = 'Invoice Reference: #VT-90821, Next-Gen Enterprise Rack Servers & Switching Array';
 
-    // Insert directly into Supabase expense_logs table
-    const { data: insertedData, error: dbError } = await supabase
+    // Use upsert instead of insert to prevent duplicates based on the unique constraint (org_id, vendor, amount)
+    const { data: upsertedData, error: dbError } = await supabase
       .from('expense_logs')
-      .insert({
-        org_id: orgId,
-        vendor: vendorName,
-        amount: totalAmount,
-        gstin: gstin,
-        igst: igst,
-        cgst: cgst,
-        sgst: sgst,
-        raw_transcript: rawTranscript,
-        approval_status: 'pending',
-        is_audited: false,
-      })
+      .upsert(
+        {
+          org_id: orgId,
+          vendor: vendorName,
+          amount: totalAmount,
+          gstin: gstin,
+          igst: igst,
+          cgst: cgst,
+          sgst: sgst,
+          raw_transcript: rawTranscript,
+          approval_status: 'pending',
+          is_audited: false,
+        },
+        { onConflict: 'org_id, vendor, amount' }
+      )
       .select();
 
     if (dbError) {
@@ -62,7 +65,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      data: insertedData,
+      data: upsertedData,
     });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
