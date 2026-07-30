@@ -8,7 +8,7 @@ export default function LandingPage() {
     <div style={{ minHeight: '100vh', backgroundColor: '#020617', color: '#f8fafc', fontFamily: 'system-ui, sans-serif', padding: '1.5rem 1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', boxSizing: 'border-box', textAlign: 'center' }}>
       
       {/* Top Navigation */}
-      <nav style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', sm: { flexDirection: 'row' }, alignItems: 'center', justifyContent: 'center', gap: '1rem', background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(30, 41, 59, 0.8)', padding: '1rem 1.5rem', borderRadius: '1.5rem', backdropFilter: 'blur(16px)', boxSizing: 'border-box' }}>
+      <nav style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(30, 41, 59, 0.8)', padding: '1rem 1.5rem', borderRadius: '1.5rem', backdropFilter: 'blur(16px)', boxSizing: 'border-box' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', width: '100%' }}>
           <div style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(79, 70, 229, 0.2)', border: '1px solid rgba(99, 102, 241, 0.3)', borderRadius: '0.75rem', color: '#818cf8', fontWeight: 'bold' }}>
             🛡️
