@@ -55,11 +55,11 @@ export default function DashboardAnalytics({ data }: DashboardAnalyticsProps) {
             key={index}
             style={{ background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(30, 41, 59, 0.8)', borderRadius: '1.5rem', padding: '1.5rem', backdropFilter: 'blur(16px)', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.5)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '1rem', boxSizing: 'border-box' }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={{ fontSize: '0.75rem', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#94a3b8' }}>
                 {metric.title}
               </span>
-              <div style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.75rem', background: metric.bgColor, border: `1px solid ${metric.borderColor}`, color: metric.textColor }}>
+              <div style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.75rem', background: metric.bgColor, border: `1px solid ${metric.borderColor}`, color: metric.textColor, marginLeft: 'auto' }}>
                 <Icon style={{ width: '20px', height: '20px' }} />
               </div>
             </div>

@@ -13,7 +13,10 @@ export const useDashboardActions = (
   const supabase = getSupabaseBrowserClient();
 
   const exportToCSVForAccountant = useCallback(() => {
-    if (expenses.length === 0) return;
+    if (!expenses || expenses.length === 0) {
+      toast.error("Export Blocked", { description: "Cannot download an empty ledger without any entries." });
+      return;
+    }
 
     const headers = [
       'Record ID', 'Created At Date', 'Vendor', 'Amount (INR)',
@@ -101,6 +104,11 @@ export const useDashboardActions = (
       return;
     }
 
+    if (!expenses || expenses.length === 0) {
+      toast.error("Export Blocked", { description: "Cannot compile GSTR-1 without any ledger entries." });
+      return;
+    }
+
     try {
       const res = await fetch(`/api/org/export-gstr1?orgId=${currentOrgId}&year=2026&month=05`);
       const result = await res.json();
@@ -117,7 +125,7 @@ export const useDashboardActions = (
     } catch (err: any) {
       toast.error("Export Failed", { description: err.message });
     }
-  }, [currentOrgId]);
+  }, [currentOrgId, expenses]);
 
   return {
     exportToCSVForAccountant,

@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getSupabaseBrowserClient } from '@/utils/supabase-client';
 import { toast } from 'sonner';
 import Link from 'next/link';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, ShieldCheck, Sun, Moon } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,6 +15,20 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+
+  useEffect(() => {
+    const savedTheme = (localStorage.getItem('ledgerarc_theme') as 'dark' | 'light') || 'dark';
+    setTheme(savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    localStorage.setItem('ledgerarc_theme', nextTheme);
+    document.documentElement.setAttribute('data-theme', nextTheme);
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,12 +57,36 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#020617', color: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem', position: 'relative', overflow: 'hidden', boxSizing: 'border-box' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem', position: 'relative', overflow: 'hidden', boxSizing: 'border-box', transition: 'background-color 0.2s ease, color 0.2s ease' }}>
+      
+      {/* Theme Toggle Button in Top Right */}
+      <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', zIndex: 20 }}>
+        <button
+          onClick={toggleTheme}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '40px',
+            height: '40px',
+            borderRadius: '0.75rem',
+            background: theme === 'dark' ? 'rgba(30, 41, 59, 0.6)' : 'rgba(226, 232, 240, 0.8)',
+            border: '1px solid var(--border-color)',
+            color: theme === 'dark' ? '#fbbf24' : '#4f46e5',
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+          }}
+          title="Toggle Theme"
+        >
+          {theme === 'dark' ? <Sun style={{ width: '18px', height: '18px' }} /> : <Moon style={{ width: '18px', height: '18px' }} />}
+        </button>
+      </div>
+
       {/* Background ambient glow effects */}
       <div style={{ position: 'absolute', top: '25%', left: '50%', transform: 'translate(-50%, -50%)', width: '400px', height: '400px', background: 'rgba(79, 70, 229, 0.1)', filter: 'blur(120px)', borderRadius: '50%', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', bottom: '2.5rem', right: '2.5rem', width: '320px', height: '320px', background: 'rgba(139, 92, 246, 0.1)', filter: 'blur(100px)', borderRadius: '50%', pointerEvents: 'none' }} />
 
-      <div style={{ width: '100%', maxWidth: '440px', background: 'rgba(15, 23, 42, 0.9)', border: '1px solid rgba(30, 41, 59, 0.8)', borderRadius: '1.5rem', padding: '2rem', backdropFilter: 'blur(20px)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)', display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'relative', zIndex: 10, boxSizing: 'border-box' }}>
+      <div style={{ width: '100%', maxWidth: '440px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '1.5rem', padding: '2rem', backdropFilter: 'blur(20px)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)', display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'relative', zIndex: 10, boxSizing: 'border-box' }}>
         
         {/* Header Branding */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -56,15 +94,15 @@ export default function LoginPage() {
             <ShieldCheck style={{ width: '16px', height: '16px', color: '#818cf8' }} />
             Secure Enterprise Gateway
           </div>
-          <h1 style={{ fontSize: '1.875rem', fontWeight: 900, letterSpacing: '-0.025em', color: '#ffffff', margin: 0 }}>Welcome Back</h1>
-          <p style={{ fontSize: '0.875rem', color: '#94a3b8', margin: 0 }}>Sign in to access your organization ledger.</p>
+          <h1 style={{ fontSize: '1.875rem', fontWeight: 900, letterSpacing: '-0.025em', color: 'var(--text-primary)', margin: 0 }}>Welcome Back</h1>
+          <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', margin: 0 }}>Sign in to access your organization ledger.</p>
         </div>
 
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           
           {/* Email Address Input */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
-            <label style={{ fontSize: '0.75rem', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '0.375rem', fontWeight: 'bold' }}>
+            <label style={{ fontSize: '0.75rem', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.375rem', fontWeight: 'bold' }}>
               <Mail style={{ width: '14px', height: '14px', color: '#818cf8' }} /> Email Address
             </label>
             <input
@@ -73,14 +111,14 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@company.com"
               required
-              style={{ width: '100%', borderRadius: '0.75rem', border: '1px solid rgba(51, 65, 85, 0.8)', background: 'rgba(2, 6, 23, 0.8)', padding: '0.75rem 1rem', fontSize: '0.875rem', color: '#f8fafc', outline: 'none', boxSizing: 'border-box' }}
+              style={{ width: '100%', borderRadius: '0.75rem', border: '1px solid var(--border-color)', background: 'var(--bg-primary)', padding: '0.875rem 1rem', fontSize: '0.9375rem', color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box' }}
             />
           </div>
 
           {/* Password Input with Visibility Toggle */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'between' }}>
-              <label style={{ fontSize: '0.75rem', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '0.375rem', fontWeight: 'bold' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <label style={{ fontSize: '0.75rem', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.375rem', fontWeight: 'bold' }}>
                 <Lock style={{ width: '14px', height: '14px', color: '#818cf8' }} /> Password
               </label>
             </div>
@@ -91,15 +129,15 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                style={{ width: '100%', borderRadius: '0.75rem', border: '1px solid rgba(51, 65, 85, 0.8)', background: 'rgba(2, 6, 23, 0.8)', padding: '0.75rem 2.5rem 0.75rem 1rem', fontSize: '0.875rem', color: '#f8fafc', outline: 'none', boxSizing: 'border-box' }}
+                style={{ width: '100%', borderRadius: '0.75rem', border: '1px solid var(--border-color)', background: 'var(--bg-primary)', padding: '0.875rem 2.5rem 0.875rem 1rem', fontSize: '0.9375rem', color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box' }}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
+                style={{ position: 'absolute', right: '0.875rem', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
                 tabIndex={-1}
               >
-                {showPassword ? <EyeOff style={{ width: '16px', height: '16px' }} /> : <Eye style={{ width: '16px', height: '16px' }} />}
+                {showPassword ? <EyeOff style={{ width: '18px', height: '18px' }} /> : <Eye style={{ width: '18px', height: '18px' }} />}
               </button>
             </div>
           </div>
@@ -108,7 +146,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            style={{ marginTop: '0.75rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', borderRadius: '0.75rem', background: '#4f46e5', padding: '0.75rem 1rem', fontSize: '0.875rem', fontWeight: 'bold', color: '#ffffff', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.5 : 1, boxShadow: '0 10px 15px -3px rgba(79, 70, 229, 0.3)', transition: 'background 0.2s' }}
+            style={{ marginTop: '0.75rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', borderRadius: '0.75rem', background: '#4f46e5', padding: '0.875rem 1rem', fontSize: '0.9375rem', fontWeight: 'bold', color: '#ffffff', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.5 : 1, boxShadow: '0 10px 15px -3px rgba(79, 70, 229, 0.3)', transition: 'background 0.2s' }}
           >
             {loading ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -125,7 +163,7 @@ export default function LoginPage() {
         </form>
 
         {/* Footer Signup Link */}
-        <div style={{ textAlign: 'center', fontSize: '0.75rem', color: '#94a3b8', paddingTop: '0.5rem', borderTop: '1px solid rgba(30, 41, 59, 0.8)' }}>
+        <div style={{ textAlign: 'center', fontSize: '0.8125rem', color: 'var(--text-secondary)', paddingTop: '0.5rem', borderTop: '1px solid var(--border-color)' }}>
           Need a workspace for your organization?{' '}
           <Link href="/signup" style={{ color: '#818cf8', fontWeight: 600, textDecoration: 'none' }}>
             Create account
